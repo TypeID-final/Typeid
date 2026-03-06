@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
+
+/* ── ORIGINAL SIGNIN CSS ── */
+.signin-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-box {
+  width: 420px;
+  background: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.signin-box h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.signin-box input.default-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 16px;
+  color: #333;
+}
+
+.signin-box button.default-btn {
+  width: 100%;
+  padding: 10px;
+  background: #1b9aaa;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.password-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #1b9aaa;
+  cursor: pointer;
+}
+
+/* ── NEW ML TYPING UI CSS ── */
+.ml-typing-app {
+  --bg:      #030a0f;
+  --panel:   #050e16;
+  --border:  #0d3a52;
+  --accent:  #00c8ff;
+  --accent2: #00ff9f;
+  --warn:    #ff4757;
+  --text:    #c8e6f0;
+  --dim:     #4a7a90;
+  --glow:    0 0 20px rgba(0, 200, 255, 0.35);
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  width: 100%;
+  max-width: 720px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
+
+.ml-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.typing-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.1rem;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.04em;
+  resize: none;
+  display: block;
+}
+
+.typing-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.12);
+}
+
+.typing-input.complete {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 2px rgba(0, 255, 159, 0.12);
+}
+
+.typing-input.error-flash {
+  border-color: var(--warn);
+  box-shadow: 0 0 0 2px rgba(255, 71, 87, 0.12);
+}
+
+.progress-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.15s linear;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.metric-box {
+  background: rgba(0, 200, 255, 0.05);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 3px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.metric-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.metric-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.ml-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 12px 28px;
+  border: 1px solid var(--accent);
+  background: rgba(0, 200, 255, 0.08);
+  color: var(--accent);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-top: 18px;
+}
+
+.ml-btn:hover:not(:disabled) {
+  background: rgba(0, 200, 255, 0.18);
+  box-shadow: var(--glow);
+}
+
+.ml-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ml-btn.reset {
+  border-color: var(--dim);
+  color: var(--dim);
+  background: transparent;
+  margin-left: 10px;
+}
+
+.ml-btn.reset:hover:not(:disabled) {
+  border-color: var(--warn);
+  color: var(--warn);
+  box-shadow: none;
+}
+
+.ml-btn.success {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: rgba(0, 255, 159, 0.08);
+  margin-top: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.ml-btn.success:hover:not(:disabled) {
+  background: rgba(0, 255, 159, 0.18);
+  box-shadow: 0 0 20px rgba(0, 255, 159, 0.35);
+}
+
+.status-bar {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 8px;
+  min-height: 18px;
+  letter-spacing: 0.1em;
+}
+
+.status-bar.error   { color: var(--warn); }
+.status-bar.ok      { color: var(--accent2); }
+.status-bar.loading { color: var(--accent); }
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.result-panel {
+  animation: fadeInUp 0.4s ease;
+  z-index: 2;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.winner-box {
+  text-align: center;
+  padding: 24px;
+  background: rgba(0, 255, 159, 0.05);
+  border: 1px solid var(--accent2);
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.winner-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  margin-bottom: 8px;
+}
+
+.winner-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: var(--accent2);
+  text-shadow: 0 0 30px rgba(0, 255, 159, 0.5);
+  letter-spacing: 0.08em;
+}
+
+.winner-votes {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin-top: 6px;
+}
+
+.voting-explainer {
+  background: rgba(0,200,255,.04);
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.explainer-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.explainer-body {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.model-card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px;
+}
+
+.model-name {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.rank-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.rank-row:last-child { border-bottom: none; }
+
+.rank-num  { color: var(--dim); }
+.rank-user { color: var(--text); }
+.rank-conf { color: var(--accent2); }
+
+.rank-row-winner .rank-user, .vote-name-winner {
+  color: var(--accent2) !important;
+  font-weight: 700;
+}
+.rank-row-winner .rank-num {
+  color: var(--accent2);
+}
+
+.vote-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.vote-name {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text);
+  min-width: 100px;
+}
+
+.vote-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vote-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vote-count-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--dim);
+  min-width: 40px;
+  text-align: right;
+}

@@ -1,0 +1,84 @@
+.cyber-theme {
+  color: white;
+  font-family: "Courier New", monospace;
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1510519138101-570d1dca3d66");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 50px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #00f7ff;
+}
+
+.glow-text {
+  color: #00f7ff;
+  text-shadow: 0 0 10px #00f7ff,
+               0 0 20px #00f7ff,
+               0 0 40px #0088ff;
+}
+
+/* BUTTON */
+.cyber-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: transparent;
+  border: 2px solid #00f7ff;
+  color: #00f7ff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cyber-btn:hover {
+  background: #00f7ff;
+  color: black;
+  box-shadow: 0 0 20px #00f7ff;
+}
+
+/* SECTIONS */
+.section {
+  padding: 120px 40px;
+  text-align: center;
+  background: #0f172a;
+}
+
+.section.dark {
+  background: #020617;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  width: 260px;
+  border-radius: 12px;
+  border: 1px solid #00f7ff;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 25px #00f7ff;
+}
