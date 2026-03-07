@@ -1,2 +1,0 @@
-# TypeID
-Final Year Project

@@ -17,7 +17,7 @@ const UserDashboard = ({ setPage, userId, role, onLogout }) => {
 			try {
 				if (role === "admin") {
 					// Admins request system-wide admin summary
-					const url = "http://127.0.0.1:5000/api/dashboard/admin?role=admin";
+					const url = "http://127.0.0.1:5001/api/dashboard/admin?role=admin";
 					console.log("[UserDashboard] Admin fetch:", url);
 					const res = await fetch(url);
 					if (!res.ok) {
@@ -29,7 +29,7 @@ const UserDashboard = ({ setPage, userId, role, onLogout }) => {
 					if (mounted) setSummary(data);
 				} else {
 					// student/teacher -> user-specific summary (POST)
-					const url = "http://127.0.0.1:5000/api/dashboard/user";
+					const url = "http://127.0.0.1:5001/api/dashboard/user";
 					const body = { user_id: userId, role };
 					console.log("[UserDashboard] User fetch:", url, body);
 					const res = await fetch(url, {

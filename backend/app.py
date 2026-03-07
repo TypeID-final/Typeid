@@ -2,6 +2,7 @@
 Flask Backend for Typing Biometric Authentication
 """
 from flask import Flask, request, jsonify
+import json
 from flask_cors import CORS
 from services.auth_service import AuthService
 from services.user_service import UserService
@@ -240,6 +241,49 @@ def login_password():
         return jsonify({'access_granted': False, 'message': 'Internal server error during authentication'}), 500
 
 
+@app.route('/predict', methods=['POST', 'OPTIONS'])
+def predict():
+    """Direct ML prediction endpoint for MLTypingAPP"""
+    if request.method == 'OPTIONS':
+        return '', 204
+    
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        # The ML model expects a features dictionary (which gets wrapped into a list internally or here)
+        winner, confidence, full_result = auth_service.predict_user_from_keystroke([data])
+        
+        if full_result:
+            # Save the prediction result to the database for the dashboard
+            try:
+                user = user_service.find_user_by_name(winner)
+                if user:
+                    user_id = user.get('user_id') or user.get('id')
+                    user_service.create_login_session(
+                        user_id=user_id,
+                        reg_id=user_id,
+                        login_method='biometrics',
+                        status='success' if confidence >= 30 else 'failed',
+                        result_details=json.dumps(full_result)
+                    )
+                else:
+                    print(f"[WARNING] Predicted user '{winner}' not found in DB so prediction could not be logged.")
+            except Exception as e:
+                print(f"[ERROR] failed to log prediction: {e}")
+                
+            return jsonify(full_result), 200
+        else:
+            return jsonify({'error': 'Prediction failed'}), 500
+            
+    except Exception as e:
+        print(f"[ERROR] predict endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/login-hybrid', methods=['POST', 'OPTIONS'])
 def login_hybrid():
     """
@@ -316,7 +360,8 @@ def login_hybrid():
                         user_id=user_id,
                         reg_id=user_id,
                         login_method='ml_model',
-                        status='success'
+                        status='success',
+                        result_details=json.dumps(ml_details)
                     )
                     
                     return jsonify({
@@ -342,7 +387,8 @@ def login_hybrid():
                         user_id=user_id,
                         reg_id=user_id,
                         login_method='ml_model',
-                        status='failed'
+                        status='failed',
+                        result_details=json.dumps(ml_details)
                     )
                     
                     return jsonify({
@@ -382,7 +428,8 @@ def login_hybrid():
                         user_id=user_id,
                         reg_id=user_id,
                         login_method='database_comparison',
-                        status='success'
+                        status='success',
+                        result_details=json.dumps(stat_details)
                     )
                     
                     return jsonify({
@@ -407,7 +454,8 @@ def login_hybrid():
                         user_id=user_id,
                         reg_id=user_id,
                         login_method='database_comparison',
-                        status='failed'
+                        status='failed',
+                        result_details=json.dumps(stat_details)
                     )
                     
                     return jsonify({
@@ -483,7 +531,7 @@ def dashboard_admin():
 
                 # Fetch activity logs from login_session table
                 cur = conn.execute(
-                    "SELECT ls.login_time, u.name as username, ls.status, ls.login_method "
+                    "SELECT ls.login_time, u.name as username, ls.status, ls.login_method, ls.result_details "
                     "FROM login_session ls "
                     "JOIN user u ON u.user_id = ls.user_id "
                     "ORDER BY ls.login_time DESC LIMIT 10"
@@ -603,16 +651,13 @@ def ensure_ml_users_exist():
         ml_users = temp_auth.get_ml_users()
         
         for username in ml_users:
-            user = user_service.find_user_by_name(username)
-            if not user:
-                print(f"[INIT] ML User '{username}' not found in DB - creating dummy user record")
-                user_service.create_user(username, f"{username}@typeid.com", password_hash=None)
-                
-                # Also create registration record to pass inner joins
-                new_user = user_service.find_user_by_name(username)
-                if new_user:
-                    user_id = new_user.get('user_id') or new_user.get('id')
-                    user_service.create_user_registration(user_id, password_hash=None)
+            try:
+                user = user_service.find_user_by_name(username)
+                if not user:
+                    print(f"[INIT] ML User '{username}' not found in DB - creating dummy user record")
+                    user_service.create_user(username, f"{username}@typeid.com", password_hash=None)
+            except Exception as e:
+                print(f"[ERROR] failed to ensure ML user '{username}': {e}")
     except Exception as e:
         print(f"[ERROR] ensure_ml_users_exist: {e}")
 
@@ -620,4 +665,4 @@ if __name__ == '__main__':
     # Confirm admin exists before starting the server
     ensure_admin_exists()
     ensure_ml_users_exist()
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)

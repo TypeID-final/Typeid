@@ -216,7 +216,7 @@ cursor: pointer;
   font-weight: 600;
 }
 
-.admin-status-blocked {
+.admin-status-wrong-user {
   color: #f87171;
   font-weight: 600;
 }

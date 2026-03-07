@@ -60,7 +60,7 @@ const AdminDashboard = () => {
               <tr className="border-b border-slate-700">
                 <td className="py-2">user_02</td>
                 <td>High</td>
-                <td className="text-red-400">Blocked</td>
+                <td className="text-red-400">Wrong User</td>
                 <td>10:39 AM</td>
               </tr>
 

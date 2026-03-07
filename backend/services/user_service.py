@@ -213,20 +213,21 @@ class UserService:
         finally:
             conn.close()
     
-    def create_login_session(self, user_id, reg_id, login_method='biometric', status='success'):
+    def create_login_session(self, user_id, reg_id, login_method='biometric', status='success', result_details=None):
         """Create login session record"""
         conn = self._get_conn()
         try:
             query = """
-            INSERT INTO login_session (user_id, reg_id, login_time, status, login_method)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO login_session (user_id, reg_id, login_time, status, login_method, result_details)
+            VALUES (?, ?, ?, ?, ?, ?)
             """
             conn.execute(query, (
                 user_id,
                 reg_id,
                 datetime.now().isoformat(),
                 status,
-                login_method
+                login_method,
+                result_details
             ))
             print(f"[OK] Created login_session record for user_id {user_id} ({login_method}, {status})")
             return True

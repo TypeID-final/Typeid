@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS login_session (
     status TEXT,
     login_method TEXT,
     IP_address TEXT,
+    result_details TEXT,
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (reg_id) REFERENCES user_registration(registration_id)
 );
