@@ -20,6 +20,12 @@ const Signin = ({ setPage, setUserId, onLoginSuccess }) => {
       return;
     }
     
+    const isAlnum = /^[a-zA-Z0-9]+$/.test(username.trim());
+    if (username.trim().length < 3 || !isAlnum) {
+      alert("Invalid username format");
+      return;
+    }
+    
     // redirect to biometrics page instead of flipping states in this component
     setUserId(username);
     setPage("biometrics");
@@ -29,6 +35,14 @@ const Signin = ({ setPage, setUserId, onLoginSuccess }) => {
     e.preventDefault();
     setErrorMsg("");
     setLoading(true);
+
+    const isAlnum = /^[a-zA-Z0-9]+$/.test(username.trim());
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username.trim());
+    if (!isAlnum && !isEmail) {
+      setErrorMsg("Invalid username or email format");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("http://127.0.0.1:5001/api/login-password", {

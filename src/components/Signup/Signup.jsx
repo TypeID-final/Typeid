@@ -49,9 +49,32 @@ const Signup = ({ setPage }) => {
       return;
     }
 
-    // Check password length
-    if (formData.password.length < 6) {
-      alert("Password must be at least 6 characters");
+    // Check username length and format
+    if (formData.username.length < 3) {
+      alert("Username must be at least 3 characters");
+      return;
+    }
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!usernameRegex.test(formData.username)) {
+      alert("Username must contain only letters and numbers");
+      return;
+    }
+
+    // Check password rules
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters");
+      return;
+    }
+    if (!/\d/.test(formData.password)) {
+      alert("Password must contain at least one number");
+      return;
+    }
+    if (!/[A-Z]/.test(formData.password)) {
+      alert("Password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[!@#$%^&*()_+?<>,"'-=.\/]/.test(formData.password)) {
+      alert("Password must contain at least one special character");
       return;
     }
 

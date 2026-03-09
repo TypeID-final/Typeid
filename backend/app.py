@@ -7,6 +7,7 @@ from flask_cors import CORS
 from services.auth_service import AuthService
 from services.user_service import UserService
 from utils.password_util import hash_password, verify_password
+from utils.validators import validate_email, validate_username, validate_password
 
 # Create Flask app
 app = Flask(__name__)
@@ -51,6 +52,20 @@ def register():
                 'success': False,
                 'message': 'Username, email, and keystroke features are required'
             }), 400
+            
+        # Validate inputs
+        is_valid_user, user_msg = validate_username(username)
+        if not is_valid_user:
+            return jsonify({'success': False, 'message': user_msg}), 400
+            
+        is_valid_email, email_msg = validate_email(email)
+        if not is_valid_email:
+            return jsonify({'success': False, 'message': email_msg}), 400
+            
+        if password:
+            is_valid_pass, pass_msg = validate_password(password)
+            if not is_valid_pass:
+                return jsonify({'success': False, 'message': pass_msg}), 400
         
         # Check if user exists, if not create
         user = user_service.find_user_by_name(username)
@@ -188,6 +203,11 @@ def login_password():
 
         if not username or not password:
             return jsonify({'access_granted': False, 'message': 'Username and password required'}), 400
+            
+        is_valid_user, _ = validate_username(username)
+        is_valid_email, _ = validate_email(username)
+        if not is_valid_user and not is_valid_email:
+            return jsonify({'access_granted': False, 'message': 'Invalid username or email format'}), 400
 
         user = user_service.find_user_by_name(username)
         if not user:
@@ -309,6 +329,14 @@ def login_hybrid():
             return jsonify({
                 'access_granted': False,
                 'message': 'Username is required'
+            }), 400
+            
+        is_valid_user, _ = validate_username(username)
+        is_valid_email, _ = validate_email(username)
+        if not is_valid_user and not is_valid_email:
+            return jsonify({
+                'access_granted': False,
+                'message': 'Invalid username or email format'
             }), 400
         
         if not keystroke_features_list or len(keystroke_features_list) == 0:
