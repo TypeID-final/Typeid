@@ -1,6 +1,7 @@
 """
 Flask Backend for Typing Biometric Authentication
 """
+import os
 from flask import Flask, request, jsonify
 import json
 from flask_cors import CORS
@@ -10,7 +11,8 @@ from utils.password_util import hash_password, verify_password
 from utils.validators import validate_email, validate_username, validate_password
 
 # Create Flask app
-app = Flask(__name__)
+# Point static_folder to the React build directory
+app = Flask(__name__, static_folder='../dist', static_url_path='/')
 CORS(app)  # Enable CORS for frontend
 
 # Initialize services
@@ -18,6 +20,18 @@ auth_service = AuthService()
 user_service = UserService()
 
 print("Starting TypeID Backend")
+
+@app.route('/')
+def serve():
+    return app.send_static_file('index.html')
+
+@app.route('/<path:path>')
+def catch_all(path):
+    # Serve static files if they exist, else serve index.html for React Router
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return app.send_static_file(path)
+    else:
+        return app.send_static_file('index.html')
 
 
 @app.route('/api/register', methods=['POST'])
@@ -693,4 +707,5 @@ if __name__ == '__main__':
     # Confirm admin exists before starting the server
     ensure_admin_exists()
     ensure_ml_users_exist()
-    app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)
+    port = int(os.environ.get('PORT', 7860))
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
